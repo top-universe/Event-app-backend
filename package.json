@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/top-universe/Event-app-backend/issues"
   },
-  "homepage": "https://github.com/top-universe/Event-app-backend#readme"
+  "homepage": "https://github.com/top-universe/Event-app-backend#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.1",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "uuid": "^8.3.2"
+  }
 }
