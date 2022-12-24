@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 
-// self-invocation database function
-(async function(){
-    await mongoose.connect(AppConfig.DATABASE, {
+
+exports.connectToDB = async () => {
+
+    let DATABASE = "mongodb://localhost:27107/eventapp" 
+
+    await mongoose.connect(DATABASE, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(() => {
@@ -10,4 +13,4 @@ const mongoose = require("mongoose");
     }).catch(err => {
         console.log(err)
     })
-})();
+}
