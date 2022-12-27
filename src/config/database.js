@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 
+//database connection function
+exports.connectToDB = () => {
 
-exports.connectToDB = async () => {
+    let DATABASE = AppConfig.DATABASE
 
-    let DATABASE = "mongodb://localhost:27107/eventapp" 
-
-    await mongoose.connect(DATABASE, {
+    mongoose.connect(DATABASE, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(() => {
-        console.log("Database Connected 🚀")
+        console.log("Database Connected")
     }).catch(err => {
         console.log(err)
     })

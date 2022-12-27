@@ -1,26 +1,24 @@
 const authRouter  = require("express").Router()
 const passport = require("passport")
 require("../../config/passport")
-const {
-    login,
-    logout,
-    google, 
-    googleRedirect,
-    checkUserIsLoggedIn} = require("./handler")
 
+//authenticate user [login/signup]
 authRouter.get(
-    '/auth/google', 
-    passport.authenticate('google', { scope: ['profile'] }),
-    google
+    '/google', 
+    passport.authenticate('google', { scope: ['profile', 'email'] })
 )
 
-authRouter.get('/auth/google/callback', 
-    passport.authenticate('google'),
-    googleRedirect
+authRouter.get('/google/callback', 
+    passport.authenticate('google', {
+        failureRedirect: "/auth/failed",
+        successRedirect: "/auth/user"
+    })
 )
-  
-//Logout
-// authRouter.get("/logout", logout)
-// authRouter.get("/login", checkUserIsLoggedIn, login)
+
+//logouts
+authRouter.get("/logout", (req, res) => {
+    req.session.destroy()
+    req.redirect("/")
+})
 
 module.exports = authRouter

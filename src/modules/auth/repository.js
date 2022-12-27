@@ -1,29 +1,24 @@
-const mongoose = require("mongoose")
-const { v4 } = require("uuid")
 const authCollection = require("./schema")
 
+
+//get user from db
 exports.getUser = async (email) => {
 
-    return userCollection.findOne({email})
+    return authCollection.findOne({ email })
 }
 
+//create and save new user to db
 exports.createNewUser = async(googleId, email, username) => {
     try {
         let user = {
             googleId: googleId,
             email: email,
-            userame: username,
+            username: username,
         }
 
         //save user details
         let newUser = new authCollection(user)
-        newUser.save()
-
-        //filter result
-        return {
-            id: newUser._id,
-            email: newUser.email
-        }
+        return newUser.save()
 
     } catch (err) {
         console.log(err)

@@ -19,20 +19,20 @@ passport.use(new GoogleStrategy({
   },
   async (accessToken, refreshToken, profile, done) => {
 
-    //user details from google
+    // user details from google
     let email = profile.emails[0].value
     let googleId = profile.id
     let username = profile.displayName
 
-    const currentUser = Auth.findOne(email)
+    let currentUser = await Auth.getUser(email)
     if (currentUser){
       //user already exists
       return done(null, currentUser)
-    }else {
-      //user is new
-      Auth.createNewUser(googleId, email, username)
-      return done(null, currentUser)
     }
+    //new user
+    currentUser = await Auth.createNewUser(googleId, email, username)
+    return done(null, currentUser)
+    
 
    }
 ));
