@@ -10,10 +10,18 @@ authRouter.get(
 
 authRouter.get('/google/callback', 
     passport.authenticate('google', {
-        failureRedirect: "/auth/failed",
+        failureRedirect: "/auth/google",
         successRedirect: "/auth/user"
     })
 )
+
+authRouter.get("/user", (req, res) => {
+    let user = req.user
+    res.json({
+        "message": "user logged in",
+        user
+    })
+})
 
 //logouts
 authRouter.get("/logout", (req, res) => {

@@ -8,12 +8,14 @@ exports.getUser = async (email) => {
 }
 
 //create and save new user to db
-exports.createNewUser = async(googleId, email, username) => {
+exports.createNewUser = async(googleId, email, firstname, lastname, picture) => {
     try {
         let user = {
             googleId: googleId,
             email: email,
-            username: username,
+            firstname: firstname,
+            lastname: lastname,
+            picture: picture
         }
 
         //save user details

@@ -22,7 +22,10 @@ passport.use(new GoogleStrategy({
     // user details from google
     let email = profile.emails[0].value
     let googleId = profile.id
-    let username = profile.displayName
+    let firstname = profile.name.givenName
+    let lastname = profile.name.familyName
+    let picture = profile.photos[0].value
+
 
     let currentUser = await Auth.getUser(email)
     if (currentUser){
@@ -30,7 +33,7 @@ passport.use(new GoogleStrategy({
       return done(null, currentUser)
     }
     //new user
-    currentUser = await Auth.createNewUser(googleId, email, username)
+    currentUser = await Auth.createNewUser(googleId, email, firstname, lastname, picture)
     return done(null, currentUser)
     
 
