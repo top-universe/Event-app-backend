@@ -1,9 +1,9 @@
 const express =  require("express")
 const app = express()
+require("./src/config/keys")
 const passport = require("passport")
 const authRouter = require("./src/modules/auth/router")
 const eventRouter = require("./src/modules/event/router")
-require("./src/config/keys")
 const { connectToDB } = require("./src/config/database")
 const session = require("express-session")
 
@@ -20,6 +20,7 @@ app.use(express.json())
 //Configure Passport
 app.use(passport.initialize())
 app.use(passport.session())
+
 
 app.use("/auth",authRouter)
 app.use(eventRouter)

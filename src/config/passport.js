@@ -25,17 +25,22 @@ passport.use(new GoogleStrategy({
     let firstname = profile.name.givenName
     let lastname = profile.name.familyName
     let picture = profile.photos[0].value
-
-
-    let currentUser = await Auth.getUser(email)
-    if (currentUser){
-      //user already exists
+    
+    if (checkIfUserExist(email)){
       return done(null, currentUser)
     }
-    //new user
-    currentUser = await Auth.createNewUser(googleId, email, firstname, lastname, picture)
-    return done(null, currentUser)
     
-
-   }
+    let newUser = createNewUser({ googleId, email, firstname, lastname, picture })
+      return done(null, newUser)
+    }
 ));
+
+
+async function checkIfUserExist(email) {
+  let currentUser = await Auth.getUser(email)
+  return (currentUser)? true : false
+}
+
+async function createNewUser(data) {
+  return await Auth.createNewUser(...data)
+}
