@@ -1,7 +1,7 @@
 require("dotenv").config()
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const Auth = require("../modules/auth/repository")
+const {checkIfUserExist, createNewUser } = require("./repository")
 
 
 passport.serializeUser(function(user, done) {
@@ -22,17 +22,18 @@ passport.use(new GoogleStrategy({
     // user details from google
     let email = profile.emails[0].value
     let googleId = profile.id
-    let username = profile.displayName
-
-    let currentUser = await Auth.getUser(email)
+    let firstname = profile.name.givenName
+    let lastname = profile.name.familyName
+    let picture = profile.photos[0].value
+    
+    let currentUser = await checkIfUserExist(email)
     if (currentUser){
-      //user already exists
       return done(null, currentUser)
     }
-    //new user
-    currentUser = await Auth.createNewUser(googleId, email, username)
-    return done(null, currentUser)
     
-
-   }
+    let newUser = await createNewUser({ googleId, email, firstname, lastname, picture })
+      return done(null, newUser)
+    }
 ));
+
+

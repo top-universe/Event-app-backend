@@ -12,9 +12,19 @@ const authSchema = new Schema({
         type: String,
         required: true
     },
-    username: {
+    firstname: {
         type: String,
-        // required: true
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+
+    },
+    picture: {
+        type: String,
+        required: true
+
     }
 })
 
