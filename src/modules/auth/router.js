@@ -1,9 +1,11 @@
 const authRouter  = require("express").Router()
 const passport = require("passport")
 const { generateToken } = require('./middleware')
+const {authController} = require('./controller')
+
 require("./passport")
 
-// authenticate user [login/signup]
+// [google login/signup]
 authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
 
 // get google profile detail handler
@@ -14,18 +16,8 @@ authRouter.get('/google/callback',
     })
 )
 
+authRouter.get("/logout", authController.logout) // logout route
 
-// logout handler
-authRouter.get("/logout", (req, res) => {
-    req.session.destroy()
-    req.redirect("/")
-})
-
-// get authenticated user
-authRouter.get('/home', generateToken, (req, res) => {
-    token = req.token
-    res.send(token)
-})
-
+authRouter.get('/home', generateToken, authController.getAuthenticatedUser) // get authenticated user
 
 module.exports = authRouter
