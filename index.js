@@ -3,7 +3,6 @@ const app = express()
 require("./src/config/keys")
 const passport = require("passport")
 const authRouter = require("./src/modules/auth/router")
-const eventRouter = require("./src/modules/event/router")
 const { connectToDB } = require("./src/config/database")
 const session = require("express-session")
 
@@ -23,7 +22,6 @@ app.use(passport.session())
 
 
 app.use("/auth",authRouter)
-app.use(eventRouter)
 
 app.get("/", (req, res) => {
     res.send("Welcome to event app")

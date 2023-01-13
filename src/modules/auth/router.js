@@ -1,18 +1,16 @@
-const jwt = require('jsonwebtoken')
-const secret = AppConfig.SESSION_SECRET
-
 const authRouter  = require("express").Router()
 const passport = require("passport")
-require("../../config/passport")
+const { generateToken } = require('./middleware')
+require("./passport")
 
 // authenticate user [login/signup]
-authRouter.post('/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
+authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
 
 // get google profile detail handler
 authRouter.get('/google/callback', 
     passport.authenticate('google', {
         failureRedirect: "/auth/google",
-        successRedirect: "/auth/user"
+        successRedirect: "/auth/home"
     })
 )
 
@@ -23,28 +21,11 @@ authRouter.get("/logout", (req, res) => {
     req.redirect("/")
 })
 
-
-authRouter.get('/user', (req, res) => {
-    // collect user details
-    let user  = req.session.id
-    let {v4} = require('uuid')
-    let token = jwt.sign({
-        user
-      }, secret, { expiresIn: '1h' });
-      console.log(token)
+// get authenticated user
+authRouter.get('/home', generateToken, (req, res) => {
+    token = req.token
     res.send(token)
 })
 
-
-authRouter.post('/verifyToken', (req,res) => {
-    const token = req.headers.authorization
-    try {
-        const decoded = jwt.verify(token, secret);
-        res.send(decoded.user.id)  
-    }catch(err) {
-        console.log(err)
-        res.send(err)
-    }
-})
 
 module.exports = authRouter
