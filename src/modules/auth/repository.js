@@ -1,4 +1,4 @@
-const authCollection = require("./schema")
+const { authCollection } = require("./schema")
 
 
 //get user from db

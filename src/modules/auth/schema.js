@@ -29,4 +29,4 @@ const authSchema = new Schema({
 })
 
 const authCollection = mongoose.model("auth", authSchema)
-module.exports = authCollection
+module.exports = {authCollection}

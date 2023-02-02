@@ -4,10 +4,10 @@ const { generateToken } = require('./middleware')
 require("./passport")
 
 // authenticate user [login/signup]
-authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
+authRouter.get('auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
 
 // get google profile detail handler
-authRouter.get('/google/callback', 
+authRouter.get('auth/google/callback', 
     passport.authenticate('google', {
         failureRedirect: "/auth/google",
         successRedirect: "/auth/home"
@@ -16,13 +16,13 @@ authRouter.get('/google/callback',
 
 
 // logout handler
-authRouter.get("/logout", (req, res) => {
+authRouter.get("auth/logout", (req, res) => {
     req.session.destroy()
     req.redirect("/")
 })
 
 // get authenticated user
-authRouter.get('/home', generateToken, (req, res) => {
+authRouter.get('auth/home', generateToken, (req, res) => {
     token = req.token
     res.send(token)
 })

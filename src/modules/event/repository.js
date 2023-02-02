@@ -1,15 +1,35 @@
-const Event = require("./schema")
+const { eventCollection } = require("./schema")
 
-exports.getEvent = async(id) =>{
-    return Event.findOne({ _id: id})
+
+exports.getEvents = async(page) => {
+    let limit = 10 
+    let totalPages  = await eventCollection.find().count()
+    let events = await eventCollection.find()
+                        .limit(10)
+                        .skip((page - 1) * limit)
+
+    return {
+        page,
+        totalPages,
+        events
+    }
 }
 
-exports.createvent = async(data) => {
-    let newEvent = new Event(data)
-    await newEvent.save()
-    return newEvent
+
+exports.filterEvents = async(page, filter) => {
+    let limit = 10 
+    let totalPages  = await eventCollection.find(filter).count()
+    let filtered = await eventCollection.find(filter)
+                        .limit(10)
+                        .skip((page - 1) * limit)
+
+    return {
+        page,
+        totalPages,
+        filtered
+    }
 }
 
-exports.deleteEvent = async(id) => {
-    return await Event.findByIAndDelete(id)
+exports.getEvent = async (id) => {
+    return await eventCollection.findById(id)
 }
